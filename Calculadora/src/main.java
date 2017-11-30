@@ -1,3 +1,6 @@
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 /**
  * @author Miquel 
@@ -8,6 +11,7 @@ public class main {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
+
 		new ControladorPrincipal();
 		
 	}

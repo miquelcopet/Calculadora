@@ -1,5 +1,13 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 
 /**
@@ -11,12 +19,32 @@ public class ControladorPrincipal {
 	
 	private vista frame = new vista();
 	private Operacion o = new Operacion(Double.NaN, Double.NaN, '\0', Double.NaN);
-	private String historial = "";
 	
-	public ControladorPrincipal () {
+	Path p = Paths.get("D:\\Git\\LocalCalculadora\\Calculadora\\log.txt");
+	String s = System.lineSeparator();
+
+	public ControladorPrincipal () {	
+		
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		LocalDateTime now = LocalDateTime.now();
+		
+		try (BufferedWriter writer = Files.newBufferedWriter(p, StandardOpenOption.APPEND)) {
+		    writer.write(s + dtf.format(now));
+		} catch (IOException ioe) {
+		    System.err.format("IOException: %s%n", ioe);
+		}
+		
 		//updateResult();
 		frame.setVisible(true);
 
+		frame.btnCE.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				o.Reset();
+				frame.txtResult.setText("");
+				frame.txtHistory.setText("");
+			}
+		});
+		
 		//Definicion funcionalidades botones numéricos
 		frame.btn0.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -82,6 +110,7 @@ public class ControladorPrincipal {
 				o.setValor2(Double.parseDouble(frame.txtResult.getText()));
 				if (!o.getValor1().isNaN() && !o.getValor2().isNaN()) {
 					o.Calcular();
+					insertarRegistro();
 				}
 				
 				updateResult();
@@ -132,7 +161,53 @@ public class ControladorPrincipal {
 		
 	}
 	
-	
+	public void Operacion (ActionEvent e) {
+	/*	if (!o.getResult().isNaN()) {
+			//Operation IS RESOLVED
+			//TODO Insertar operación en el historial y resetear operacion
+		} else {
+			if(!o.getValor1().isNaN()) {
+				//The operation IS NOT resolved but VAL1 IS already assigned
+				//TODO Assign value to VAL2
+				
+			} else {
+				//The operation IS NOT resolved and VAL1 IS NOT assigned
+				//TODO Assign value to VAL 1 
+				
+			}
+		}*/
+		if (o.isResolved()) {			
+			
+			frame.txtHistory.setText(o.getResult().toString());
+			frame.txtResult.setText("");
+			o.setValor1(o.getResult());
+			o.setValor2(Double.NaN);
+			o.setOperacion(e.getActionCommand().charAt(0));
+			
+		} else {
+			if (o.getValor1().isNaN()) {
+				o.setValor1(Double.parseDouble(frame.txtResult.getText()));
+				o.setOperacion(e.getActionCommand().charAt(0));
+				frame.txtHistory.setText((o.getValor1().toString()+o.getSymbol()));
+				frame.txtResult.setText("");
+			}
+			if (!o.getValor1().isNaN()) {
+				o.setValor2(Double.parseDouble(frame.txtResult.getText()));
+			}
+		}
+
+	}
+
+
+	private void insertarRegistro() {
+		// TODO Auto-generated method stub
+		try (BufferedWriter writer = Files.newBufferedWriter(p, StandardOpenOption.APPEND)) {
+		    writer.write(s + o.getValor1() + o.getSymbol() + o.getValor2() + " = " + o.getResult());
+		} catch (IOException ioe) {
+		    System.err.format("IOException: %s%n", ioe);
+		}
+	}
+
 	//Funciones
 	private void updateResult () {
 		if (o.getResult().isNaN()) {
@@ -142,41 +217,9 @@ public class ControladorPrincipal {
 		}
 	}
 	
-	private void updateHistory() {
-		frame.txtHistory.setText(historial);
-	}
+	//private void clear
 	
-	public void Operacion (ActionEvent e) {
-		if (o.getResult().isNaN()) {
-			if (o.getValor1().isNaN()) {
-				//Si X esta vacio se le da el valor 
-				o.setValor1(Double.parseDouble(frame.txtResult.getText()));
-				o.setOperacion(e.getActionCommand().charAt(0));
-				frame.txtResult.setText(frame.txtResult.getText()+e.getActionCommand().charAt(0));
-				
-				
-			} else {
-				//Si X esta lleno, se llena y con el valor introducido
-				o.setValor2(Double.parseDouble(frame.txtResult.getText()));
-				
-				if (!o.getValor1().isNaN() && !o.getValor2().isNaN()) {
-					//Si tanto x como y tienen valor, se calcula la operacion se actualiza el resulatado en pantalla
-					o.Calcular();
-					frame.txtHistory.setText(frame.txtHistory.getText() + o.getValor1().toString() + o.getSymbol() + o.getValor2());
-					updateResult();
-				}
-			}
-		} else {
-			//La operacion ya tiene simbolo o esta resuelta asi que se guarda en el historial y se resetea la operacion
-			Double _tempOldResult = o.getResult();
-			o.Reset();
-			o.setValor1(_tempOldResult);
-			o.setOperacion(e.getActionCommand().charAt(0));
-			updateResult();
-			
-		}
-
-	}
+}
 	
 	
 	/*TODO
@@ -188,4 +231,4 @@ public class ControladorPrincipal {
 		return isEven;
 	}
 	*/
-}
+

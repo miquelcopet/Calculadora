@@ -26,6 +26,14 @@ public class Operacion {
 		this.result = r;
 	}
 	
+	public boolean isResolved () {
+		if (this.result.isNaN()) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+	
 	public Double getValor1() {
 		return valor1;
 	}
