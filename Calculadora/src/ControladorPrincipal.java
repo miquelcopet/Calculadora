@@ -1,6 +1,7 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -8,6 +9,9 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+
+import javax.security.auth.x500.X500Principal;
+import javax.swing.JOptionPane;
 
 
 /**
@@ -28,8 +32,25 @@ public class ControladorPrincipal {
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		LocalDateTime now = LocalDateTime.now();
 		
-		try (BufferedWriter writer = Files.newBufferedWriter(p, StandardOpenOption.APPEND)) {
-		    writer.write(s + dtf.format(now));
+    	try{
+
+    		File file = new File(p.toString());
+
+    		if  (file.delete()) {
+    			System.out.println(file.getName() + " is deleted!");
+    		}else{
+    			System.out.println("Delete operation is failed.");
+    		}
+
+    	}catch(Exception e){
+
+    		e.printStackTrace();
+
+    	}
+		
+		try (BufferedWriter writer = Files.newBufferedWriter(p, StandardOpenOption.CREATE)) {
+			writer.flush();
+		    writer.close();
 		} catch (IOException ioe) {
 		    System.err.format("IOException: %s%n", ioe);
 		}
@@ -100,7 +121,20 @@ public class ControladorPrincipal {
 		//Definicion funcionalidades botones de símbolos
 		frame.btnComa.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				frame.txtResult.setText(frame.txtResult.getText()+".");
+				String txt = frame.txtResult.getText();
+				if (txt.indexOf(".") >= 0) {
+					System.out.println("El número ya tiene coma");
+				} else {
+					frame.txtResult.setText(frame.txtResult.getText()+".");
+				}
+			}
+		});
+		
+		frame.btnMasMenos.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Double x = Double.parseDouble(frame.txtResult.getText());
+			    x = -x;
+			    frame.txtResult.setText(x.toString());
 			}
 		});
 		
@@ -159,31 +193,43 @@ public class ControladorPrincipal {
 			}
 		});
 		
+		//MENU
+		frame.mntmExit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int opcion = JOptionPane.showConfirmDialog(null, "Quiere cerrar el programa?", "Alerta", JOptionPane.YES_NO_OPTION);
+
+				if (opcion == 0) {
+					System.exit(0);
+				} 
+			}
+		});
+		
 	}
+
 	
 	public void Operacion (ActionEvent e) {
-	/*	if (!o.getResult().isNaN()) {
+		/*OBSOLETO
+		 * if (!o.getResult().isNaN()) {
 			//Operation IS RESOLVED
 			//TODO Insertar operación en el historial y resetear operacion
 		} else {
 			if(!o.getValor1().isNaN()) {
 				//The operation IS NOT resolved but VAL1 IS already assigned
 				//TODO Assign value to VAL2
-				
+
 			} else {
 				//The operation IS NOT resolved and VAL1 IS NOT assigned
 				//TODO Assign value to VAL 1 
-				
+
 			}
-		}*/
+	}*/
 		if (o.isResolved()) {			
-			
 			frame.txtHistory.setText(o.getResult().toString());
 			frame.txtResult.setText("");
 			o.setValor1(o.getResult());
 			o.setValor2(Double.NaN);
 			o.setOperacion(e.getActionCommand().charAt(0));
-			
+
 		} else {
 			if (o.getValor1().isNaN()) {
 				o.setValor1(Double.parseDouble(frame.txtResult.getText()));

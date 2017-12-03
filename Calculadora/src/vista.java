@@ -13,6 +13,9 @@ import java.awt.Color;
 import javax.swing.ImageIcon;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JMenuBar;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
 
 @SuppressWarnings("serial")
 public class vista extends JFrame {
@@ -21,7 +24,7 @@ public class vista extends JFrame {
 	public JTextField txtResult;
 	public JButton btnSRoot;
 	public JButton btnPow;
-	public JButton btnSettings;
+	public JButton btnMasMenos;
 	public JButton btnC;
 	public JButton btnCE;
 	public JButton btnDelete;
@@ -42,6 +45,7 @@ public class vista extends JFrame {
 	public JButton btnComa;
 	public JButton btn0;
 	public JTextField txtHistory;
+	public JMenuItem mntmExit;
 
 	public vista() {
 		setTitle("Calculadra Copet");
@@ -51,20 +55,40 @@ public class vista extends JFrame {
 		Font buttonFont = new Font("Microsoft JhengHei UI Light", Font.BOLD, 25);
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 283, 576);
+		setBounds(100, 100, 291, 597);
+		
+		JMenuBar menuBar = new JMenuBar();
+		setJMenuBar(menuBar);
+		
+		JMenu mnOpciones = new JMenu("Opciones");
+		menuBar.add(mnOpciones);
+		
+		JMenu mnRegistro = new JMenu("Registro");
+		mnOpciones.add(mnRegistro);
+		
+		JMenuItem mntmExportarRegistro = new JMenuItem("Exportar registro");
+		mnRegistro.add(mntmExportarRegistro);
+		
+		JMenuItem mntmMostrarRegistro = new JMenuItem("Mostrar registro actual");
+		mnRegistro.add(mntmMostrarRegistro);
+		
+		mntmExit = new JMenuItem("Exit");
+
+		mnOpciones.add(mntmExit);
 		contentPane = new JPanel();
 		contentPane.setBackground(mainColor);
 		contentPane.setBorder(null);
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		contentPane.setBackground(mainColor);
 		
 		txtResult = new JTextField();
-		txtResult.setForeground(Color.decode("#0B3A8A"));
+		txtResult.setForeground(Color.WHITE);
 		txtResult.setEditable(false);
 		txtResult.setBackground(mainColor);
 		txtResult.setFont(new Font("Microsoft JhengHei UI Light", Font.PLAIN, 30));
 		txtResult.setHorizontalAlignment(SwingConstants.RIGHT);
-		txtResult.setBounds(0, 29, 271, 79);
+		txtResult.setBounds(0, 29, 253, 79);
 		txtResult.setText("");
 		contentPane.add(txtResult);
 		txtResult.setColumns(10);
@@ -74,10 +98,10 @@ public class vista extends JFrame {
 		txtHistory.setBounds(0, 0, 272, 27);
 		contentPane.add(txtHistory);
 		txtHistory.setColumns(10);
-		txtHistory.setForeground(Color.decode("#0B3A8A"));
+		txtHistory.setForeground(Color.WHITE);
 		txtHistory.setEditable(false);
 		txtHistory.setBackground(buttonColor);
-		txtHistory.setFont(new Font("Microsoft JhengHei UI Light", Font.PLAIN, 14));
+		txtHistory.setFont(new Font("Microsoft JhengHei UI Light", Font.BOLD, 17));
 		txtHistory.setHorizontalAlignment(SwingConstants.LEFT);
 		txtHistory.setBorder(null);
 		
@@ -113,14 +137,14 @@ public class vista extends JFrame {
 		btnPow.setBounds(137, 0, 70, 70);
 		panel.add(btnPow);
 		
-		btnSettings = new JButton("");
-		btnSettings.setIcon(new ImageIcon("I:\\Miquel\\Imágenes\\ico\\settings.png"));
-		btnSettings.setFont(buttonFont);
-		btnSettings.setFocusPainted(false);
-		btnSettings.setBorder(null);
-		btnSettings.setBackground(buttonColor);
-		btnSettings.setBounds(204, 0, 70, 70);
-		panel.add(btnSettings);
+		btnMasMenos = new JButton("±");
+		btnMasMenos.setIcon(new ImageIcon("I:\\Miquel\\Imágenes\\ico\\settings.png"));
+		btnMasMenos.setFont(buttonFont);
+		btnMasMenos.setFocusPainted(false);
+		btnMasMenos.setBorder(null);
+		btnMasMenos.setBackground(buttonColor);
+		btnMasMenos.setBounds(204, 0, 70, 70);
+		panel.add(btnMasMenos);
 		
 		btnCE = new JButton("CE");
 		btnCE.setFont(new Font("Microsoft JhengHei UI Light", Font.BOLD, 25));
