@@ -7,6 +7,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -21,13 +22,16 @@ import javax.swing.JOptionPane;
 
 public class ControladorPrincipal {
 	
-	private vista frame = new vista();
+	private vista framePrincipal = new vista();
+	private Historial frameHistorial = new Historial();
 	private Operacion o = new Operacion(Double.NaN, Double.NaN, '\0', Double.NaN);
 	
 	Path p = Paths.get("D:\\Git\\LocalCalculadora\\Calculadora\\log.txt");
 	String s = System.lineSeparator();
 
 	public ControladorPrincipal () {	
+		
+		frameHistorial.setVisible(false);
 		
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		LocalDateTime now = LocalDateTime.now();
@@ -56,92 +60,92 @@ public class ControladorPrincipal {
 		}
 		
 		//updateResult();
-		frame.setVisible(true);
+		framePrincipal.setVisible(true);
 
-		frame.btnCE.addActionListener(new ActionListener() {
+		framePrincipal.btnCE.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				o.Reset();
-				frame.txtResult.setText("");
-				frame.txtHistory.setText("");
+				framePrincipal.txtResult.setText("");
+				framePrincipal.txtHistory.setText("");
 			}
 		});
 		
 		//Definicion funcionalidades botones numéricos
-		frame.btn0.addActionListener(new ActionListener() {
+		framePrincipal.btn0.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				frame.txtResult.setText(frame.txtResult.getText()+"0");
+				framePrincipal.txtResult.setText(framePrincipal.txtResult.getText()+"0");
 			}
 		});
-		frame.btn1.addActionListener(new ActionListener() {
+		framePrincipal.btn1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				frame.txtResult.setText(frame.txtResult.getText()+"1");
+				framePrincipal.txtResult.setText(framePrincipal.txtResult.getText()+"1");
 			}
 		});
-		frame.btn2.addActionListener(new ActionListener() {
+		framePrincipal.btn2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				frame.txtResult.setText(frame.txtResult.getText()+"2");
+				framePrincipal.txtResult.setText(framePrincipal.txtResult.getText()+"2");
 			}
 		});
-		frame.btn3.addActionListener(new ActionListener() {
+		framePrincipal.btn3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				frame.txtResult.setText(frame.txtResult.getText()+"3");
+				framePrincipal.txtResult.setText(framePrincipal.txtResult.getText()+"3");
 			}
 		});
-		frame.btn4.addActionListener(new ActionListener() {
+		framePrincipal.btn4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				frame.txtResult.setText(frame.txtResult.getText()+"4");
+				framePrincipal.txtResult.setText(framePrincipal.txtResult.getText()+"4");
 			}
 		});
-		frame.btn5.addActionListener(new ActionListener() {
+		framePrincipal.btn5.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				frame.txtResult.setText(frame.txtResult.getText()+"5");
+				framePrincipal.txtResult.setText(framePrincipal.txtResult.getText()+"5");
 			}
 		});
-		frame.btn6.addActionListener(new ActionListener() {
+		framePrincipal.btn6.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				frame.txtResult.setText(frame.txtResult.getText()+"6");
+				framePrincipal.txtResult.setText(framePrincipal.txtResult.getText()+"6");
 			}
 		});
-		frame.btn7.addActionListener(new ActionListener() {
+		framePrincipal.btn7.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				frame.txtResult.setText(frame.txtResult.getText()+"7");
+				framePrincipal.txtResult.setText(framePrincipal.txtResult.getText()+"7");
 			}
 		});
-		frame.btn8.addActionListener(new ActionListener() {
+		framePrincipal.btn8.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				frame.txtResult.setText(frame.txtResult.getText()+"8");
+				framePrincipal.txtResult.setText(framePrincipal.txtResult.getText()+"8");
 			}
 		});
-		frame.btn9.addActionListener(new ActionListener() {
+		framePrincipal.btn9.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				frame.txtResult.setText(frame.txtResult.getText()+"9");
+				framePrincipal.txtResult.setText(framePrincipal.txtResult.getText()+"9");
 			}
 		});
 	
 		//Definicion funcionalidades botones de símbolos
-		frame.btnComa.addActionListener(new ActionListener() {
+		framePrincipal.btnComa.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String txt = frame.txtResult.getText();
+				String txt = framePrincipal.txtResult.getText();
 				if (txt.indexOf(".") >= 0) {
 					System.out.println("El número ya tiene coma");
 				} else {
-					frame.txtResult.setText(frame.txtResult.getText()+".");
+					framePrincipal.txtResult.setText(framePrincipal.txtResult.getText()+".");
 				}
 			}
 		});
 		
-		frame.btnMasMenos.addActionListener(new ActionListener() {
+		framePrincipal.btnMasMenos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Double x = Double.parseDouble(frame.txtResult.getText());
+				Double x = Double.parseDouble(framePrincipal.txtResult.getText());
 			    x = -x;
-			    frame.txtResult.setText(x.toString());
+			    framePrincipal.txtResult.setText(x.toString());
 			}
 		});
 		
 		//Definición boton igual
-		frame.btnEqual.addActionListener(new ActionListener() {
+		framePrincipal.btnEqual.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				o.setValor2(Double.parseDouble(frame.txtResult.getText()));
+				o.setValor2(Double.parseDouble(framePrincipal.txtResult.getText()));
 				if (!o.getValor1().isNaN() && !o.getValor2().isNaN()) {
 					o.Calcular();
 					insertarRegistro();
@@ -152,7 +156,7 @@ public class ControladorPrincipal {
 		});
 		
 		//Botones operaciones básicas
-		frame.btnSuma.addActionListener(new ActionListener() {
+		framePrincipal.btnSuma.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {	
 				try {
 					Operacion(e);
@@ -162,7 +166,7 @@ public class ControladorPrincipal {
 			}
 		});
 		
-		frame.btnResta.addActionListener(new ActionListener() {
+		framePrincipal.btnResta.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					Operacion(e);
@@ -172,7 +176,7 @@ public class ControladorPrincipal {
 			}
 		});
 		
-		frame.btnMultiply.addActionListener(new ActionListener() {
+		framePrincipal.btnMultiply.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					Operacion(e);
@@ -182,7 +186,7 @@ public class ControladorPrincipal {
 			}
 		});
 		
-		frame.btnDivide.addActionListener(new ActionListener() {
+		framePrincipal.btnDivide.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					Operacion(e);
@@ -194,7 +198,7 @@ public class ControladorPrincipal {
 		});
 		
 		//MENU
-		frame.mntmExit.addActionListener(new ActionListener() {
+		framePrincipal.mntmExit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int opcion = JOptionPane.showConfirmDialog(null, "Quiere cerrar el programa?", "Alerta", JOptionPane.YES_NO_OPTION);
 
@@ -204,9 +208,14 @@ public class ControladorPrincipal {
 			}
 		});
 		
+		framePrincipal.mntmMostrarRegistroTotal.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frameHistorial.setVisible(true);
+			}
+		});
+		
 	}
 
-	
 	public void Operacion (ActionEvent e) {
 		/*OBSOLETO
 		 * if (!o.getResult().isNaN()) {
@@ -224,21 +233,21 @@ public class ControladorPrincipal {
 			}
 	}*/
 		if (o.isResolved()) {			
-			frame.txtHistory.setText(o.getResult().toString());
-			frame.txtResult.setText("");
+			framePrincipal.txtHistory.setText(o.getResult().toString());
+			framePrincipal.txtResult.setText("");
 			o.setValor1(o.getResult());
 			o.setValor2(Double.NaN);
 			o.setOperacion(e.getActionCommand().charAt(0));
 
 		} else {
 			if (o.getValor1().isNaN()) {
-				o.setValor1(Double.parseDouble(frame.txtResult.getText()));
+				o.setValor1(Double.parseDouble(framePrincipal.txtResult.getText()));
 				o.setOperacion(e.getActionCommand().charAt(0));
-				frame.txtHistory.setText((o.getValor1().toString()+o.getSymbol()));
-				frame.txtResult.setText("");
+				framePrincipal.txtHistory.setText((o.getValor1().toString()+o.getSymbol()));
+				framePrincipal.txtResult.setText("");
 			}
 			if (!o.getValor1().isNaN()) {
-				o.setValor2(Double.parseDouble(frame.txtResult.getText()));
+				o.setValor2(Double.parseDouble(framePrincipal.txtResult.getText()));
 			}
 		}
 
@@ -257,9 +266,9 @@ public class ControladorPrincipal {
 	//Funciones
 	private void updateResult () {
 		if (o.getResult().isNaN()) {
-			frame.txtResult.setText("0");
+			framePrincipal.txtResult.setText("0");
 		} else {
-		frame.txtResult.setText(o.getResult().toString());
+		framePrincipal.txtResult.setText(o.getResult().toString());
 		}
 	}
 	

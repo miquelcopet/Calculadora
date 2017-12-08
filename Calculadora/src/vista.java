@@ -46,6 +46,7 @@ public class vista extends JFrame {
 	public JButton btn0;
 	public JTextField txtHistory;
 	public JMenuItem mntmExit;
+	public JMenuItem mntmMostrarRegistroTotal;
 
 	public vista() {
 		setTitle("Calculadra Copet");
@@ -71,6 +72,9 @@ public class vista extends JFrame {
 		
 		JMenuItem mntmMostrarRegistro = new JMenuItem("Mostrar registro actual");
 		mnRegistro.add(mntmMostrarRegistro);
+		
+		mntmMostrarRegistroTotal = new JMenuItem("Mostrar registro total");
+		mnRegistro.add(mntmMostrarRegistroTotal);
 		
 		mntmExit = new JMenuItem("Exit");
 

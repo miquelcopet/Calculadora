@@ -10,17 +10,13 @@ import com.mysql.jdbc.Statement;
 
 public class ControladorHistorial {
 
-	public Historial h;
-
 	public ControladorHistorial() throws SQLException {
 
-		h = new Historial();
 
 	}
 
 	public void getHistory(JTable t) throws SQLException{
-		String[] titulos = { "Operacion"};
-		String[] registro = new String[4];
+		String[] titulos = { "Operaciones"};
 
 		DefaultTableModel model = new DefaultTableModel(null, titulos);
 		Conexion.open();
@@ -33,11 +29,12 @@ public class ControladorHistorial {
 			resp = stm.executeQuery(consulta);
 
 			while (resp.next()){
-				registro[0] = resp.getString("DATE");
-				//registro[1] = resp.getString("OPERATION");
-				registro[2] = resp.getString("RESULT");
-
-				model.addRow(registro);
+			new Operacion(new Double(resp.getDouble("val1")),
+					new Double(resp.getDouble("val2")),
+					resp.getString("sym").charAt(0),
+					resp.getDouble("res"));
+					String operacionCompleta = (resp.getDouble("val1")+"")+(resp.getString("sym").charAt(0))+(resp.getDouble("val2")+"")+ " = " +resp.getDouble("res");
+					model.addRow(new Object[]{operacionCompleta});
 
 			}
 			t.setModel(model);

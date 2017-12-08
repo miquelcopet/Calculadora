@@ -1,41 +1,54 @@
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
+import javax.swing.JTable;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
 
-public class Historial {
+import javax.swing.JScrollPane;
+import javax.swing.table.DefaultTableModel;
+import java.awt.Font;
 
-	private JFrame frame;
+public class Historial extends JFrame {
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Historial window = new Historial();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+	public JTable table;
 
-	/**
-	 * Create the application.
-	 */
 	public Historial() {
-		initialize();
-	}
+		getContentPane().setBackground(Color.BLUE);
 
-	/**
-	 * Initialize the contents of the frame.
-	 */
-	private void initialize() {
-		frame = new JFrame();
-		frame.setBounds(100, 100, 450, 300);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	}
+		JScrollPane scrollPane = new JScrollPane();
+		setBounds(450, 100, 291, 350);
+		getContentPane().add(scrollPane);
 
+		setTitle("Historial operaciones");
+		Color mainColor= new Color(52, 152, 219);
+		Color buttonColor = new Color(30, 115, 172);
+		
+		table = new JTable();
+		table.setBackground(mainColor);
+		table.setFont(new Font("Microsoft JhengHei UI Light", Font.PLAIN, 18));
+		table.setRowHeight(35);
+		table.getTableHeader().setBackground(buttonColor);
+		table.getTableHeader().setFont(new Font("Microsoft JhengHei UI Light", Font.BOLD, 25));
+		table.getTableHeader().setForeground(Color.WHITE);
+		table.getTableHeader().setPreferredSize(new Dimension(scrollPane.getWidth(), 40));
+		
+		table.setModel(new DefaultTableModel(
+				new Object[][] {
+				},
+				new String[] {
+						"Ey ey ey"
+				}
+				));
+		scrollPane.setViewportView(table);
+		
+		try {
+			ControladorHistorial c = new ControladorHistorial();
+			c.getHistory(table);
+		} catch (Exception e) {
+			System.out.println("Error al cargar el historial");
+		}
+
+	}
 }
