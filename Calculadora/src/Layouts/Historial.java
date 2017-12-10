@@ -1,15 +1,23 @@
-import java.awt.EventQueue;
+package Layouts;
 
 import javax.swing.JFrame;
 import javax.swing.JTable;
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 
 import javax.swing.JScrollPane;
 import javax.swing.table.DefaultTableModel;
+
+import Controllers.ControladorHistorial;
+
 import java.awt.Font;
 
+/**
+ * @author miquel-msi
+ *
+ */
+
+@SuppressWarnings("serial")
 public class Historial extends JFrame {
 
 	public JTable table;
@@ -26,6 +34,10 @@ public class Historial extends JFrame {
 		Color buttonColor = new Color(30, 115, 172);
 		
 		table = new JTable();
+		table.setShowVerticalLines(false);
+		table.setShowHorizontalLines(false);
+		table.setShowGrid(false);
+		table.setEnabled(false);
 		table.setBackground(mainColor);
 		table.setFont(new Font("Microsoft JhengHei UI Light", Font.PLAIN, 18));
 		table.setRowHeight(35);

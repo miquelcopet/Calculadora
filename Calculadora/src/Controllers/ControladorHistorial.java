@@ -1,3 +1,4 @@
+package Controllers;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -6,7 +7,13 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-import com.mysql.jdbc.Statement;
+import Model.Operacion;
+import Utility.Conexion;
+
+/**
+ * @author miquel-msi
+ *
+ */
 
 public class ControladorHistorial {
 
