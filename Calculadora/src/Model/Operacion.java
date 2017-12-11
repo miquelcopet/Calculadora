@@ -87,6 +87,8 @@ public class Operacion {
 		case '/':
 			this.result = this.valor1/this.valor2;
 			break;
+		case '%':
+			this.result = (this.valor1/this.valor2)*100;
 		default:
 			break;
 		}
